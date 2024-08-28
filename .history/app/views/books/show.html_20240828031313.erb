@@ -1,0 +1,53 @@
+<h1>Book Details</h1>
+
+<p>
+  <strong>Title:</strong>
+  <%= @book.title %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @book.author %>
+</p>
+
+<p>
+  <strong>Genre:</strong>
+  <%= @book.genre %>
+</p>
+
+<p>
+  <strong>ISBN:</strong>
+  <%= @book.isbn %>
+</p>
+
+
+<% if policy(Book).see_total_copies? %>
+  <p>
+    <strong>Total Copies:</strong>
+    <%= @book.total_copies %>
+  </p>
+  <p>
+    <strong>Available Copies:</strong>
+    <%= @book.available_copies %>
+  </p>
+<% end %>
+
+<% if current_user.librarian? %>
+  <%= link_to 'View Borrowings', book_borrowings_path(@borrowing.book), class: 'btn btn-info' %>
+<% end %>
+
+<% if @borrowing %>
+  <% if policy(@borrowing).return_book? %>
+    <%= link_to 'Return Book', return_book_book_path(@book), data: { "turbo-method": :patch }, class: 'btn btn-secondary' %>
+  <% end %>
+<% elsif @book.available? %>
+  <% if policy(@book).borrow? %>
+    <%= button_to 'Borrow Book', borrow_book_path(@book), data: { "turbo-method": :post }, class: 'btn btn-primary' %>
+  <% end %>
+<% else %>
+  <p>Book is not available.</p>
+<% end %>
+<% if policy(@book).edit? %>
+  <%= link_to 'Edit', edit_book_path(@book), class: 'btn btn-secondary' %>
+<% end %>
+<%= link_to 'Back', books_path, class: 'btn btn-primary' %>

@@ -1,0 +1,30 @@
+<h1>All Borrowings</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Book Title</th>
+      <th>Borrower</th>
+      <th>Borrowed At</th>
+      <th>Due At</th>
+      <th>Returned At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @borrowings.each do |borrowing| %>
+      <tr>
+        <td><%= borrowing.book.title %></td>
+        <td><%= borrowing.user.email %></td>
+        <td><%= borrowing.borrowed_at.strftime('%Y-%m-%d') %></td>
+        <td><%= borrowing.due_at.strftime('%Y-%m-%d') %></td>
+        <td><%= borrowing.returned_on ? borrowing.returned_at.strftime('%Y-%m-%d') : 'Not Returned' %></td>
+        <td>
+          <% unless borrowing.returned_on %>
+            <%= link_to 'Return Book', return_borrowing_path(borrowing), method: :patch, class: 'btn btn-danger' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,46 @@
+<h1>Book Details</h1>
+
+<p>
+  <strong>Title:</strong>
+  <%= @book.title %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @book.author %>
+</p>
+
+<p>
+  <strong>Genre:</strong>
+  <%= @book.genre %>
+</p>
+
+<p>
+  <strong>ISBN:</strong>
+  <%= @book.isbn %>
+</p>
+
+
+<% if policy(Book).see_total_copies? %>
+  <p>
+    <strong>Total Copies:</strong>
+    <%= @book.total_copies %>
+  </p>
+<% end %>
+
+
+  <% if current_user.borrowings.exists?(book: @book, returned_on: nil) %>
+    <% if policy(Borrowing).create? %>
+      <%= link_to 'Return Book', return_book_book_path(@book), method: :patch, class: 'btn btn-secondary' %>
+    <% end %>
+  <% elsif @book.available? %>
+    <% if policy(Borrowing).destroy? %>
+      <%= button_to 'Borrow Book', borrow_book_path(@book), method: :post, class: 'btn btn-primary' %>
+    <% end %>
+  <% else %>
+    <p>Book is not available.</p>
+  <% end %>
+<br>
+
+<%= link_to 'Edit', edit_book_path(@book), class: 'btn btn-secondary' %>
+<%= link_to 'Back', books_path, class: 'btn btn-primary' %>

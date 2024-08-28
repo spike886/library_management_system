@@ -1,0 +1,34 @@
+<!-- app/views/pages/home.html.erb -->
+<h1>Library Dashboard</h1>
+
+<% if current_user.librarian? %>
+  <h2>Librarian Dashboard</h2>
+  <p>Total Books: <%= @total_books %></p>
+  <p>Total Borrowed Books: <%= @total_borrowed_books %></p>
+  <h3>Books Due Today</h3>
+  <ul>
+    <% @books_due_today.each do |borrowing| %>
+      <li><%= borrowing.book.title %> - Due Date: <%= borrowing.due_at %></li>
+    <% end %>
+  </ul>
+  <h3>Members with Overdue Books</h3>
+  <ul>
+    <% @overdue_members.each do |member| %>
+      <li><%= member.email %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <h2>Member Dashboard</h2>
+  <h3>Books You've Borrowed</h3>
+  <ul>
+    <% @borrowings.each do |borrowing| %>
+      <li><%= borrowing.book.title %> - Due Date: <%= borrowing.due_at %></li>
+    <% end %>
+  </ul>
+  <h3>Overdue Books</h3>
+  <ul>
+    <% @overdue_books.each do |borrowing| %>
+      <li><%= borrowing.book.title %> - Due Date: <%= borrowing.due_at %></li>
+    <% end %>
+  </ul>
+<% end %>

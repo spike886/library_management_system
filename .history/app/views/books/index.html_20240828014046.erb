@@ -1,0 +1,41 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Books" %>
+
+<h1>Books</h1>
+
+<%= link_to 'New Book', new_book_path, class: 'btn btn-primary' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Genre</th>
+      <th>ISBN</th>
+      <th>Total Copies</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td><%= book.title %></td>
+        <td><%= book.author %></td>
+        <td><%= book.genre %></td>
+        <td><%= book.isbn %></td>
+        <td><%= book.total_copies %></td>
+        <td><%= link_to 'Show', book %></td>
+        <td><%= link_to 'Edit', edit_book_path(book) %></td>
+        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<% if authorize Book, :new? %>
+  <%= link_to 'New Book', new_book_path, class: 'btn btn-primary' %>
+<% end %>
